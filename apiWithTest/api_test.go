@@ -85,6 +85,11 @@ func TestEndpoint(t *testing.T) {
 			output: &User{Id: "556f37", FullName: "Antony Uptown", Email: "antony.downtown@gmail.com"},
 		},
 		{
+			users:  []*User{&User{Id: "556f37", FullName: "Antony Downtown", Email: "antony.downtown@gmail.com"}},
+			input:  UpdateUserRequest{Id: "556f37", FullName: pointer("Antony Uptown"), Email: pointer("t.jefferson@mirro.com")},
+			output: &User{Id: "556f37", FullName: "Antony Uptown", Email: "t.jefferson@mirro.com"},
+		},
+		{
 			users:  []*User{&User{Id: "34d35", FullName: "Mickle Now", Email: "m.n@story.com"}},
 			input:  UpdateUserRequest{Id: "34d35"},
 			output: &User{Id: "34d35", FullName: "Mickle Now", Email: "m.n@story.com"},
