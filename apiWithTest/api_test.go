@@ -1,4 +1,4 @@
-package tests
+package api
 
 import (
 	"fmt"
@@ -33,7 +33,26 @@ var (
 )
 
 func (api *UserApi) Update(request UpdateUserRequest) (*User, error) {
-	//TODO: Implement here
+
+	Id := request.Id
+	flagNotFound := true
+	for _, user := range api.storage {
+		if Id == user.Id {
+			flagNotFound = false
+			if request.FullName != nil {
+				user.FullName = *request.FullName
+			}
+			if request.Email != nil {
+				user.Email = *request.Email
+			}
+			return user, nil
+		}
+	}
+
+	if flagNotFound {
+		return nil, UserNotFound
+	}
+
 	return nil, ErrNotImplemented
 }
 
@@ -61,9 +80,9 @@ func TestEndpoint(t *testing.T) {
 			err:   UserNotFound,
 		},
 		{
-			users:  []*User{&User{Id: "556f36", FullName: "Antony Downtown", Email: "antony.downtown@gmail.com"}},
+			users:  []*User{&User{Id: "556f37", FullName: "Antony Downtown", Email: "antony.downtown@gmail.com"}},
 			input:  UpdateUserRequest{Id: "556f37", FullName: pointer("Antony Uptown")},
-			output: &User{Id: "556f36", FullName: "Antony Uptown", Email: "antony.downtown@gmail.com"},
+			output: &User{Id: "556f37", FullName: "Antony Uptown", Email: "antony.downtown@gmail.com"},
 		},
 		{
 			users:  []*User{&User{Id: "34d35", FullName: "Mickle Now", Email: "m.n@story.com"}},
